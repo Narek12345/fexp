@@ -6,9 +6,15 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+instance
 
 # Python byte code.
 __pycache__
+<<<<<<< Updated upstream
 *.pyc
 
 .DS_Store
+=======
+env
+instance
+>>>>>>> Stashed changes

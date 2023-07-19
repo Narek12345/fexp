@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for
 
-from fexp import app
+from fexp import app, models
 
 
 @app.route('/index')
