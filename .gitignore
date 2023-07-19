@@ -1,2 +1,14 @@
+# Virtual environment.
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python byte code.
 __pycache__
-env
+*.pyc
+
+.DS_Store
