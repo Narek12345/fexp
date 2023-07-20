@@ -6,16 +6,33 @@
 
     <title>{% block title %}{% endblock %}</title>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
+
     {% block links %}
     {% endblock %}
-    
+
 </head>
 <body>
-    <header class="header"></header>
+    <header class="header">
+        <div class="header__inner">
+            <nav class="nav">
+                <ul>
+                    <li><a href="" class="nav__link"></a></li>
+                    <li><a href="" class="nav__link"></a></li>
+                    <li><a href="" class="nav__link"></a></li>
+                    <li><a href="" class="nav__link"></a></li>
+                    <li><a href="" class="nav__link"></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
     {% block content %}
     {% endblock %}
 
     <footer class="footer"></footer>
+
+    <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+    
 </body>
 </html>

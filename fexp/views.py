@@ -6,9 +6,19 @@ from fexp import app, models
 @app.route('/index')
 @app.route('/')
 def index():
-    return 'Hello world'
-
-
-@app.route('/list_of_jobs')
-def list_of_jobs():
     return render_template('index.html')
+
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    return 'Page register'
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    return 'Page login'
+
+
+@app.route('/profile/<username>', methods=['GET'])
+def profile(username):
+    return f'Hello {username}'
