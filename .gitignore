@@ -10,11 +10,12 @@ instance
 
 # Python byte code.
 __pycache__
-<<<<<<< Updated upstream
 *.pyc
 
+# BD.
+*.db
+fexp.db
+database.db
+migrations
+
 .DS_Store
-=======
-env
-instance
->>>>>>> Stashed changes
