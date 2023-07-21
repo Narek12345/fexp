@@ -9,7 +9,6 @@ class User(db.Model, UserMixin):
     
     username = db.Column(db.String(255), index=True, nullable=True, unique=True)
     password = db.Column(db.String(255), nullable=True)
-    email = db.Column(db.String(255), index=True, nullable=True)
 
     def __repr__(self):
         return f'{self.id}:{self.username}'
@@ -27,13 +26,27 @@ class Employer(db.Model):
     
     first_name = db.Column(db.String(255), nullable=True)
     last_name = db.Column(db.String(255), nullable=True)
-    company = db.Column(db.String(255))
     phone_number = db.Column(db.String(255))
-    email = db.Column(db.String(255), index=True, nullable=True, unique=True)
+    email = db.Column(db.String(255), nullable=True, unique=True)
 
-    userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
     
     def __repr__(self):
+        return f'{self.id}:{self.first_name}'
+
+
+class Student(db.Model):
+    tablename = 'student'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    first_name = db.Column(db.String(), nullable=True)
+    last_name = db.Column(db.String(255), nullable=True)
+    phone_number = db.Column(db.String(255))
+    email = db.Column(db.String(255), nullable=True, unique=True)
+
+    user = db.Column(db.Integer(), db.ForeignKey('user.id'))
+
+    def repr(self):
         return f'{self.id}:{self.first_name}'
 
 
@@ -41,7 +54,7 @@ class JobVacansy(db.Model):
     __tablename__ = 'job_vacansy'
     id = db.Column(db.Integer(), primary_key=True)
 
-    job_title = db.Column(db.String(255), nullable=True)
+    title = db.Column(db.String(255), nullable=True)
     salary = db.Column(db.Integer(), nullable=True)
     description = db.Column(db.String(255))
     experience = db.Column(db.String(255), nullable=True)
@@ -50,8 +63,27 @@ class JobVacansy(db.Model):
     city = db.Column(db.String(255))
     adress = db.Column(db.String(255))
 
-    userid = db.Column(db.Integer, db.ForeignKey('employer.id'))
+    employer = db.Column(db.Integer, db.ForeignKey('employer.id'))
     
     def __repr__(self):
-        return f'{self.id}:{self.first_name}'
+        return f'{self.id}:{self.title}'
 
+
+class Summary(db.Model):
+    tablename = 'summary'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    title = db.Column(db.String(255), nullable=True)
+    salary = db.Column(db.Integer(), nullable=False, default=None)
+    age = db.Column(db.Integer(), nullable=False, default=None)
+    experience = db.Column(db.String(255), nullable=True)
+    country = db.Column(db.String(255))
+    city = db.Column(db.String(255))
+    adress = db.Column(db.String(255))
+    skills = db.Column()
+    biography = db.Column(db.String(1000), nullable=True)
+    
+    student = db.Column(db.Integer(), db.ForeignKey('student.id'))
+
+    def repr(self):
+        return f'{self.id} {self.title}'
