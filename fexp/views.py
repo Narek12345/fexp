@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from fexp import app, db
 from .models import User
@@ -13,18 +14,31 @@ def index():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     user = User()
+
     if request.method == 'POST':
         # Получаем из формы значения полей и сохраняем их в обьекте User, а затем добавляем этот обьект в БД.
-        user.username = request.form.get('username')
+        username = request.form.get('username')
         password = request.form.get('password')
-        user.set_password(password)
-        user.role = request.form.get('role')
-        db.session.add(user)
-        db.session.commit()
+        role = request.form.get('role')
 
-        flash('GOOD !', 'info')
-        return redirect(url_for('index'))
+        if password:
+            if not user.query.filter_by(username=username).first():
+                try:
+                    hash = generate_password_hash(password)            
+                    users = User(username=username, password=hash, role=role)
 
+                    db.session.add(users)
+                    db.session.commit()
+
+                    flash('Регистрация прошла успешно')
+                except:
+                    db.session.rollback()
+                    flash('error')
+            else:
+                flash('Имя пользователя уже зарегистрировано')
+        else:
+            flash('Поле пароля пустое')
+    
     return render_template('register.html')
 
 

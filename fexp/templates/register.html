@@ -1,12 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block links %}
+
+{% endblock %} 
+
+{% block content %}
 <form method="post">
-	<p>Username: <input name="username"></p>
-	<p>Password: <input name="password"></p>
-	<p>Role:
-		<select name="role">
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				{{ message }}
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+	<div class="form-group">
+		<label for="">Имя пользователя:</label>
+		<input id="inputUsername" name="username" type="text">
+	</div>
+	
+	<div class="form-group">
+		<label for="inputPsw">Пароль:</label>
+		<input id="inputPsw" name="password" type="password">
+	</div>
+	
+	<div class="select-role">
+		<label for="inputRole">Выберите роль:</label>
+		<select id="inputRole" name="role">
 			<option value="student">Student</option>
 			<option value="employer">Employer</option>
 		</select>
-	</p>
+	</div>
 	
-	<button>Отправить</button>
+	<button class="btn btn-primary" type="submit">Отправить</button>
+
 </form>
+
+{% endblock %}
