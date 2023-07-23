@@ -8,9 +8,9 @@ class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer(), primary_key=True)
     
-    username = db.Column(db.String(255), index=True, unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    registration_time = db.Column(db.DateTime, default=datetime.utcnow)
+    username = db.Column(db.String(255), index=True, unique=True, nullable=True)
+    password = db.Column(db.String(255), nullable=True)
+    registration_time = db.Column(db.DateTime(), default=datetime.utcnow)
     role = db.Column(db.String(10))
 
     def __repr__(self):
