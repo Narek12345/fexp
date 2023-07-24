@@ -15,8 +15,6 @@ def index():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    user = User()
-
     if request.method == 'POST':
         # Получаем из формы значения полей и сохраняем их в обьекте User, а затем добавляем этот обьект в БД.
         username = request.form.get('username')
@@ -24,7 +22,7 @@ def register():
         role = request.form.get('role')
 
         if password:
-            if not user.query.filter_by(username=username).first():
+            if not User.query.filter_by(username=username).first():
                 try:
                     hash = generate_password_hash(password)            
                     users = User(username=username, password=hash, role=role)
@@ -73,7 +71,7 @@ def profile(username):
     elif user.role == 'employer':
         user_info = Employer.query.filter_by(user=user.id).first()
 
-    return render_template('profile.html')
+    return render_template('profile.html', username=username)
 
 
 @login_required

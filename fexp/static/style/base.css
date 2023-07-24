@@ -1,14 +1,47 @@
 body {
     margin: 0;
     font-size: 16px;
+    font-family: 'ABeeZee', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothin: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
 }
 
 .header {
     width: 100%;
-    max-width: 1400px;
-    height: 100px;
 }
 
 .header__inner {
+    background-color: #0022ff;
     width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 35px 0;
+
+    font-size: 25px;
+    display: flex;
+}
+
+.logo {
+    width: 100px;
+}
+
+.nav {
+    display: flex;
+    margin: 0;
+}
+
+.nav__link {
+    margin-right: 50px;
+}
+
+.btn {
+    background-color: rgb(1, 1, 107);
+    padding: 15px 20px;
+    border-radius: 2px;
 }
