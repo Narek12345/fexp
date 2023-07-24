@@ -2,6 +2,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_mail import Mail
 
 from config import Config, UserLogin
 
@@ -23,5 +24,7 @@ login_manager = LoginManager(app)
 
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
+
+mail = Mail(app)
 
 from fexp import models, views

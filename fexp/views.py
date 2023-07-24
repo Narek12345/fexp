@@ -5,6 +5,7 @@ from flask_login import login_required, login_user, current_user, logout_user
 from fexp import app, db
 from fexp.auth import load_user
 from .models import User, Student, Employer
+from fexp.email import send_email_msg
 
 
 @app.route('/index')
@@ -15,6 +16,9 @@ def index():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+
+    send_email_msg('FEXP', recipients=['fexpcompany@gmail.com'], html="<h1>Text</h1>")
+
     if request.method == 'POST':
         # Получаем из формы значения полей и сохраняем их в обьекте User, а затем добавляем этот обьект в БД.
         username = request.form.get('username')
