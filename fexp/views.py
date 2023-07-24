@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for, flash, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, current_user, logout_user
 
-from fexp import app, db, login_manager
+from fexp import app, db
+from fexp.auth import load_user
 from .models import User, Student, Employer
 
 
@@ -51,12 +52,12 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user = User.query.filter_by(username=username).first()
+        if username and password:
+            user = User.query.filter_by(username=username).first()
         
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('profile', username=current_user.username))
-            flash('Вы успешно авторизовались ')
+            if user and check_password_hash(user.password, password):
+                login_user(user)
+                return redirect(url_for('profile', username=current_user.username))
     return render_template('login.html')
 
 
@@ -72,7 +73,7 @@ def profile(username):
     elif user.role == 'employer':
         user_info = Employer.query.filter_by(user=user.id).first()
 
-    return f'Hello {username}'
+    return render_template('profile.html')
 
 
 @login_required
@@ -80,8 +81,3 @@ def profile(username):
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-
-@login_manager.user_loader
-def load_user(user):
-    return User.query.get(user)
