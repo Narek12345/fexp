@@ -83,7 +83,7 @@ def profile(username):
             profile_info = Employer.query.filter_by(user=user.id).first()
             
             # Отрисовываем страницу для зарегестрированного пользователя
-            return render_template('profile.html', profile_info=profile_info, registered_profile=True)
+            return render_template('profile.html', profile_info=profile_info, user=user, registered_profile=True)
         else:
             form = EmployerForm(request.form)
             

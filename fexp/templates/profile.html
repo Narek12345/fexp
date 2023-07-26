@@ -7,18 +7,30 @@
 {% endblock %} 
 
 {% block content %}
+    <!-- Проверяем, зарегестрировал ли свой профиль ранее пользователь -->
     {% if registered_profile %}        
         <div class="container">
             <h1>Welcome, {{ profile_info.first_name }}</h1>
             <a href="/logout" class="btn">Выйти из аккаунта</a>
         </div>
 
+        <h2>Your profile:</h2>
         <div class="profile_info">
-            <h3>{{ profile_info.first_name }}</h3>
-            <h3>{{ profile_info.last_name }}</h3>
-            <h3>{{ profile_info.phone_number }}</h3>
-            <h3>{{ profile_info.email }}</h3>
+            <h3>First name: {{ profile_info.first_name }}</h3>
+            <h3>Last name: {{ profile_info.last_name }}</h3>
+            <h3>Phone number: {{ profile_info.phone_number }}</h3>
+            <h3>Email: {{ profile_info.email }}</h3>
         </div>
+
+        <!-- Проверяем, какую ссылку вывести пользователю: создать резюме/вакансию. -->
+        {% if user.role=='student' %}
+            <a href="#" class="btn">Create a resume</a>
+        {% endif %}
+
+        {% if user.role=='employer' %}
+            <a href="#" class="btn">Create a job</a>
+        {% endif %}
+
 
     {% else %}
         <div class="container">
