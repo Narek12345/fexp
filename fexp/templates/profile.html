@@ -38,7 +38,7 @@
             <a href="/logout" class="btn">Выйти из аккаунта</a>
         </div>
 
-        <h2>Заполните пожалуйста ваш профиль:</h2>
+        <h2>Заполните пожалуйста ваш профиль, чтобы вы могли создать {% if user.role=='student' %}резюме{% endif %}{% if user.role=='employer' %}вакансию{% endif %}</h2>
         <form method="post">
             {{ form.csrf_token }}
             First name: <input type="text" name="first_name">
