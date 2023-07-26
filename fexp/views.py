@@ -70,29 +70,36 @@ def profile(username):
     user = User.query.filter_by(username=username).first()
     if user != current_user:
         abort(403)
-    
+
     if user.role == 'student':
         user_info = Student.query.filter_by(user=user.id).first()
+
     elif user.role == 'employer':
         user_info = Employer.query.filter_by(user=user.id).first()
         form = EmployerForm()
+
         # Проверяем, что пользователь вводил данные для своего профиля. В противном случае отправляем форму для ввода.
         if user_info:
-            print('Профиль уже заполнен !')
+            profile_info = Employer.query.filter_by(user=user.id).first()
+            
+            # Отрисовываем страницу для зарегестрированного пользователя
+            return render_template('profile.html', profile_info=profile_info, registered_profile=True)
         else:
             form = EmployerForm(request.form)
-
-
+            
             # Проверка формы на валидность.
             if form.validate_on_submit():
+                
                 # Создаем профиль работодателя.
                 new_employer = Employer(first_name=form.data['first_name'], last_name=form.data['last_name'], phone_number=str(form.data['phone_number']), email=form.data['email'], user=user.id)
+                
                 # Сохраняем его в БД и перенаправляем пользователя на его страницу с уже сохраненным профилем.
                 db.session.add(new_employer)
                 db.session.commit()
                 return redirect(url_for('profile', username=username))
 
-    return render_template('profile.html', form=form, username=username)
+    # Отрисовываем страницу не для зарегестрированного пользователя.
+    return render_template('profile.html', form=form, username=username, registered_profile=False)
 
 
 @login_required
