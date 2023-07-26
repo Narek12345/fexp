@@ -7,8 +7,22 @@
 {% endblock %} 
 
 {% block content %}
-<div class="container">
-    <h1>Hello {{ username }}</h1>
-    <a href="/logout">Выйти из аккаунта</a>
-</div>
+    <div class="container">
+        <h1>Hello, {{ username }}</h1>
+        <a href="/logout" class="btn">Выйти из аккаунта</a>
+    </div>
+    <br>
+    <h2>Заполните пожалуйста ваш профиль:</h2>
+    <form method="post">
+        {{ form.csrf_token }}
+        First name: <input type="text" name="first_name">
+        <br>
+        Last name: <input type="text" name="last_name">
+        <br>
+        Phone number: <input type="text" name="phone_number">
+        <br>
+        Email: <input type="text" name="email">
+        <br>
+        <button class="btn">Save</button>
+    </form>
 {% endblock %}

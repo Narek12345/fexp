@@ -3,9 +3,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, current_user, logout_user
 
 from fexp import app, db
-from fexp.auth import load_user
+from .auth import load_user
+from .email import send_email_msg
+from .forms import EmployerForm
 from .models import User, Student, Employer
-from fexp.email import send_email_msg
 
 
 @app.route('/index')
@@ -64,7 +65,7 @@ def login():
 
 
 @login_required
-@app.route('/profile/<username>', methods=['GET'])
+@app.route('/profile/<username>', methods=['POST', 'GET'])
 def profile(username):
     user = User.query.filter_by(username=username).first()
     if user != current_user:
@@ -74,8 +75,24 @@ def profile(username):
         user_info = Student.query.filter_by(user=user.id).first()
     elif user.role == 'employer':
         user_info = Employer.query.filter_by(user=user.id).first()
+        form = EmployerForm()
+        # Проверяем, что пользователь вводил данные для своего профиля. В противном случае отправляем форму для ввода.
+        if user_info:
+            print('Профиль уже заполнен !')
+        else:
+            form = EmployerForm(request.form)
 
-    return render_template('profile.html', username=username)
+
+            # Проверка формы на валидность.
+            if form.validate_on_submit():
+                # Создаем профиль работодателя.
+                new_employer = Employer(first_name=form.data['first_name'], last_name=form.data['last_name'], phone_number=str(form.data['phone_number']), email=form.data['email'], user=user.id)
+                # Сохраняем его в БД и перенаправляем пользователя на его страницу с уже сохраненным профилем.
+                db.session.add(new_employer)
+                db.session.commit()
+                return redirect(url_for('profile', username=username))
+
+    return render_template('profile.html', form=form, username=username)
 
 
 @login_required
