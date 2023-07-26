@@ -5,8 +5,8 @@ from flask_login import login_required, login_user, current_user, logout_user
 from fexp import app, db
 from .auth import load_user
 from .email import send_email_msg
-from .forms import EmployerForm
 from .models import User, Student, Employer
+from .forms import EmployerForm, StudentForm
 
 
 @app.route('/index')
@@ -73,12 +73,33 @@ def profile(username):
 
     if user.role == 'student':
         user_info = Student.query.filter_by(user=user.id).first()
+        form = StudentForm()
+
+        # Проверяем, что пользователь зарегестрировал свой профиль. В противном случае отправляем форму для ввода.
+        if user_info:
+            profile_info = Student.query.filter_by(user=user.id).first()
+
+            # Отрисовываем страницу для зарегестрированного пользователя
+            return render_template('profile.html', profile_info=profile_info, user=user, registered_profile=True)
+        else:
+            form = StudentForm(request.form)
+
+            # Проверка формы на валидность.
+            if form.validate_on_submit():
+
+                # Создаем профиль студента.
+                new_student = Student(first_name=form.data['first_name'], last_name=form.data['last_name'], phone_number=str(form.data['phone_number']), email=form.data['email'], user=user.id)
+
+                # Сохраняем его в БД и перенаправляем пользователя на его страницу с уже сохраненным профилем.
+                db.session.add(new_student)
+                db.session.commit()
+                return redirect(url_for('profile', username=username))
 
     elif user.role == 'employer':
         user_info = Employer.query.filter_by(user=user.id).first()
         form = EmployerForm()
 
-        # Проверяем, что пользователь вводил данные для своего профиля. В противном случае отправляем форму для ввода.
+        # Проверяем, что пользователь зарегестрировал свой профиль. В противном случае отправляем форму для ввода.
         if user_info:
             profile_info = Employer.query.filter_by(user=user.id).first()
             
@@ -99,7 +120,7 @@ def profile(username):
                 return redirect(url_for('profile', username=username))
 
     # Отрисовываем страницу не для зарегестрированного пользователя.
-    return render_template('profile.html', form=form, username=username, registered_profile=False)
+    return render_template('profile.html', form=form, username=username, registered_profile=False, user=user)
 
 
 @login_required
