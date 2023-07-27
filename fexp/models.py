@@ -53,12 +53,12 @@ class JobVacansy(db.Model):
 
     title = db.Column(db.String(255))
     salary = db.Column(db.Integer())
-    description = db.Column(db.String(255))
-    experience = db.Column(db.String(255))
+    description = db.Column(db.String(500))
+    experience = db.Column(db.String(50))
     company = db.Column(db.String(255))
     country = db.Column(db.String(255))
     city = db.Column(db.String(255))
-    adress = db.Column(db.String(255))
+    address = db.Column(db.String(255))
 
     employer = db.Column(db.Integer, db.ForeignKey('employer.id'))
     
@@ -67,18 +67,18 @@ class JobVacansy(db.Model):
 
 
 class Summary(db.Model):
-    tablename = 'summary'
+    __tablename__ = 'summary'
     id = db.Column(db.Integer(), primary_key=True)
 
     title = db.Column(db.String(255))
     salary = db.Column(db.Integer(), default=None)
-    age = db.Column(db.Integer(), default=None)
-    experience = db.Column(db.String(255))
+    age = db.Column(db.Integer())
+    experience = db.Column(db.String(50))
     country = db.Column(db.String(255))
     city = db.Column(db.String(255))
-    adress = db.Column(db.String(255))
+    address = db.Column(db.String(255))
     skills = db.Column(db.String(150))
-    biography = db.Column(db.String(1000))
+    biography = db.Column(db.String(500))
     
     student = db.Column(db.Integer(), db.ForeignKey('student.id'))
 
