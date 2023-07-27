@@ -22,3 +22,15 @@ class StudentForm(FlaskForm):
     last_name = StringField('Last name: ', validators=[DataRequired()])
     phone_number = IntegerField('Phone number: ', validators=[DataRequired()])
     email = StringField('Email: ', validators=[Email()])
+
+
+class JobVacansyForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired(), Length(min=5, max=255)])
+    salary = IntegerField('Salary', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    experience = StringField('Experience', validators=[DataRequired()])
+    company = StringField('Company', validators=[DataRequired()])
+    country = StringField('Country', validators=[DataRequired()])
+    city = StringField('City', validators=[DataRequired()])
+    address = StringField('Адрес', validators=[DataRequired()])
+    
