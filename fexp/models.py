@@ -58,7 +58,7 @@ class JobVacansy(db.Model):
     company = db.Column(db.String(255))
     country = db.Column(db.String(255))
     city = db.Column(db.String(255))
-    address = db.Column(db.String(255))
+    necessary_skills = db.Column(db.String(255))
 
     employer = db.Column(db.Integer, db.ForeignKey('employer.id'))
     
@@ -76,7 +76,6 @@ class Summary(db.Model):
     experience = db.Column(db.String(50))
     country = db.Column(db.String(255))
     city = db.Column(db.String(255))
-    address = db.Column(db.String(255))
     skills = db.Column(db.String(150))
     biography = db.Column(db.String(500))
     
