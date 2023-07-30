@@ -6,8 +6,8 @@ from sqlalchemy.exc import IntegrityError
 from fexp import app, db
 from .auth import load_user
 from .email import send_email_msg
-from .models import User, Student, Employer, JobVacansy
-from .forms import EmployerForm, StudentForm, JobVacansyForm
+from .models import User, Student, Employer, JobVacansy, Summary
+from .forms import EmployerForm, StudentForm, JobVacansyForm, SummaryForm
 
 
 @app.route('/index')
@@ -122,7 +122,6 @@ def profile(username):
                 except IntegrityError:
                     db.session.rollback()
                     flash('Такой email уже есть !')
-                    print('Такой email уже есть !')
 
     # Отрисовываем страницу не для зарегестрированного пользователя.
     return render_template('profile.html', form=form, username=username, registered_profile=False, user=user)
@@ -151,6 +150,15 @@ def create_job_vacansy():
 
 
 @login_required
-@app.route('/create_summary')
+@app.route('/create_summary', methods=['POST', 'GET'])
 def create_summary():
-    return render_template('create_summary.html')
+    form = SummaryForm(request.form)
+
+    if form.validate_on_submit():
+        new_summary = Summary(title=form.data['title'], salary=form.data['salary'], age=form.data['age'], experience=form.data['experience'], country=form.data['country'], city=form.data['city'], skills=form.data['skills'], biography=form.data['biography'])
+
+        db.session.add(new_summary)
+        db.session.commit()
+        return redirect(url_for('profile'), username=current_user.username)
+
+    return render_template('create_summary.html', form=form)
