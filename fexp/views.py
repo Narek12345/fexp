@@ -141,7 +141,7 @@ def create_job_vacansy():
     form = JobVacansyForm(request.form)
 
     if form.validate_on_submit():
-        new_job_vacansy = JobVacansy(title=form.data['title'], salary=form.data['salary'], description=form.data['description'], experience=form.data['experience'], company=form.data['company'], country=form.data['country'], city=form.data['city'], address=form.data['address'])
+        new_job_vacansy = JobVacansy(title=form.data['title'], salary=form.data['salary'], description=form.data['description'], experience=form.data['experience'], company=form.data['company'], country=form.data['country'], city=form.data['city'], necessary_skills=form.data['necessary_skills'])
 
         db.session.add(new_job_vacansy)
         db.session.commit()
