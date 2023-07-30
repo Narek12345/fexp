@@ -33,7 +33,7 @@ class Employer(db.Model):
 
 
 class Student(db.Model):
-    tablename = 'student'
+    __tablename__ = 'student'
     id = db.Column(db.Integer(), primary_key=True)
 
     first_name = db.Column(db.String())

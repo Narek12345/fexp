@@ -140,7 +140,12 @@ def create_job_vacansy():
     form = JobVacansyForm(request.form)
 
     if form.validate_on_submit():
-        new_job_vacansy = JobVacansy(title=form.data['title'], salary=form.data['salary'], description=form.data['description'], experience=form.data['experience'], company=form.data['company'], country=form.data['country'], city=form.data['city'], necessary_skills=form.data['necessary_skills'])
+        # Получить id текущего пользователя.
+        current_user_id = current_user.id
+        # Делаем запрос к Employer чтобы взять его id для модели JobVacansy.
+        employer_id = Employer.query.filter_by(user=current_user_id).first().id
+
+        new_job_vacansy = JobVacansy(title=form.data['title'], salary=form.data['salary'], description=form.data['description'], experience=form.data['experience'], company=form.data['company'], country=form.data['country'], city=form.data['city'], necessary_skills=form.data['necessary_skills'], employer=employer_id)
 
         db.session.add(new_job_vacansy)
         db.session.commit()
@@ -155,7 +160,12 @@ def create_summary():
     form = SummaryForm(request.form)
 
     if form.validate_on_submit():
-        new_summary = Summary(title=form.data['title'], salary=form.data['salary'], age=form.data['age'], experience=form.data['experience'], country=form.data['country'], city=form.data['city'], skills=form.data['skills'], biography=form.data['biography'])
+        # Получаем id текущего пользователя.
+        current_user_id = current_user.id
+        # Делаем запрос к Student чтобы взять его id для модели Summary.
+        student_id = Student.query.filter_by(user=current_user_id).first().id
+        
+        new_summary = Summary(title=form.data['title'], salary=form.data['salary'], age=form.data['age'], experience=form.data['experience'], country=form.data['country'], city=form.data['city'], skills=form.data['skills'], biography=form.data['biography'], student=student_id)
 
         db.session.add(new_summary)
         db.session.commit()
