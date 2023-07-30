@@ -32,7 +32,7 @@ class JobVacansyForm(FlaskForm):
     company = StringField('Company', validators=[DataRequired()])
     country = StringField('Country', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])
-    address = StringField('Адрес', validators=[DataRequired()])
+    necessary_skills = StringField('Necessary skills', validators=[DataRequired()])
 
 
 class SummaryForm(FlaskForm):
@@ -42,6 +42,5 @@ class SummaryForm(FlaskForm):
     experience = StringField('Experience', validators=[DataRequired()])
     country = StringField('Country', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])
-    address = StringField('Address', validators=[DataRequired()])
     skills = StringField('Skills', validators=[DataRequired()])
     biography = StringField('Biography', validators=[DataRequired()])
