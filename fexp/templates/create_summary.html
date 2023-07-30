@@ -1,1 +1,35 @@
 {% extends 'base.html' %}
+
+{% block content %}
+	<h1>Create a summary:</h1>
+
+	<form method="post">
+		<!-- Выводим сообщение. -->
+		{% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <h1>{{ message }}</h1>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% form.carf_token %}
+        Title: <input type="text" name="title">
+        <br>
+        Salary: <input type="text" name="salary">
+        <br>
+        Age: <input type="text" name="age">
+        <br>
+        Experience: <input type="text" name="experience">
+        <br>
+        Country: <input type="text" name="country">
+        <br>
+        City: <input type="text" name="city">
+        <br>
+        Skills: <input type="text" name="skills">
+        <br>
+        Biography: <input type="text" name="biography">
+        <br>
+        <button class="btn">Save</button>
+	</form>
+{% endblock %}
