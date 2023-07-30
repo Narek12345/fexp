@@ -1,12 +1,13 @@
 from flask import render_template, request, redirect, url_for, flash, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, current_user, logout_user
+from sqlalchemy.exc import IntegrityError
 
 from fexp import app, db
 from .auth import load_user
 from .email import send_email_msg
-from .models import User, Student, Employer
-from .forms import EmployerForm, StudentForm
+from .models import User, Student, Employer, JobVacansy
+from .forms import EmployerForm, StudentForm, JobVacansyForm
 
 
 @app.route('/index')
@@ -107,17 +108,21 @@ def profile(username):
             return render_template('profile.html', profile_info=profile_info, user=user, registered_profile=True)
         else:
             form = EmployerForm(request.form)
-            
+
             # Проверка формы на валидность.
             if form.validate_on_submit():
                 
                 # Создаем профиль работодателя.
-                new_employer = Employer(first_name=form.data['first_name'], last_name=form.data['last_name'], phone_number=str(form.data['phone_number']), email=form.data['email'], user=user.id)
-                
-                # Сохраняем его в БД и перенаправляем пользователя на его страницу с уже сохраненным профилем.
-                db.session.add(new_employer)
-                db.session.commit()
-                return redirect(url_for('profile', username=username))
+                new_employer = Employer(first_name=form.data['first_name'], last_name=form.data['last_name'], phone_number=str(form.data['phone_number']), email=form.data['email'], user=user.id)            
+                try:
+                    # Сохраняем его в БД и перенаправляем пользователя на его страницу с уже сохраненным профилем.
+                    db.session.add(new_employer)
+                    db.session.commit()
+                    return redirect(url_for('profile', username=username))
+                except IntegrityError:
+                    db.session.rollback()
+                    flash('Такой email уже есть !')
+                    print('Такой email уже есть !')
 
     # Отрисовываем страницу не для зарегестрированного пользователя.
     return render_template('profile.html', form=form, username=username, registered_profile=False, user=user)
@@ -128,3 +133,24 @@ def profile(username):
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@login_required
+@app.route('/create_job_vacansy', methods=['POST', 'GET'])
+def create_job_vacansy():
+    form = JobVacansyForm(request.form)
+
+    if form.validate_on_submit():
+        new_job_vacansy = JobVacansy(title=form.data['title'], salary=form.data['salary'], description=form.data['description'], experience=form.data['experience'], company=form.data['company'], country=form.data['country'], city=form.data['city'], address=form.data['address'])
+
+        db.session.add(new_job_vacansy)
+        db.session.commit()
+        return redirect(url_for('profile'), username=current_user.username)
+    
+    return render_template('create_job_vacansy.html', form=form)
+
+
+@login_required
+@app.route('/create_summary')
+def create_summary():
+    return render_template('create_summary.html')

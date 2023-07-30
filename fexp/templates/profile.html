@@ -14,6 +14,7 @@
             <a href="/logout" class="btn">Выйти из аккаунта</a>
         </div>
 
+        
         <h2>Your profile:</h2>
         <div class="profile_info">
             <h3>First name: {{ profile_info.first_name }}</h3>
@@ -24,11 +25,11 @@
 
         <!-- Проверяем, какую ссылку вывести пользователю: создать резюме/вакансию. -->
         {% if user.role=='student' %}
-            <a href="#" class="btn">Create a resume</a>
+            <a href="/create_summary" class="btn">Create a summary</a>
         {% endif %}
 
         {% if user.role=='employer' %}
-            <a href="#" class="btn">Create a job</a>
+            <a href="/create_job_vacansy" class="btn">Create a job</a>
         {% endif %}
 
 
@@ -38,8 +39,18 @@
             <a href="/logout" class="btn">Выйти из аккаунта</a>
         </div>
 
-        <h2>Заполните пожалуйста ваш профиль, чтобы вы могли создать {% if user.role=='student' %}резюме{% endif %}{% if user.role=='employer' %}вакансию{% endif %}</h2>
+        <h2>Заполните пожалуйста ваш профиль, чтобы вы могли создать {% if user.role=='student' %}резюме!{% endif %}{% if user.role=='employer' %}вакансию!{% endif %}</h2>
         <form method="post">
+
+            <!-- Выводим ошибки. -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <h1>{{ message }}</h1>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
             {{ form.csrf_token }}
             First name: <input type="text" name="first_name">
             <br>

@@ -35,10 +35,10 @@ class JobVacansyForm(FlaskForm):
     address = StringField('Адрес', validators=[DataRequired()])
 
 
-class Summary(FlaskForm):
+class SummaryForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=5, max=255)])
     salary = IntegerField('Salary', validators=[DataRequired()])
-    age = IntegerField('Age', validators=DataRequired())
+    age = IntegerField('Age', validators=[DataRequired()])
     experience = StringField('Experience', validators=[DataRequired()])
     country = StringField('Country', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])

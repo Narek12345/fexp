@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Create a job:</h1>
+
+	<form method="post">
+		<!-- Выводим сообщения. -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <h1>{{ message }}</h1>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {{ form.csrf_token }}
+            Title: <input type="text" name="title">
+            <br>
+            Salary: <input type="text" name="salary">
+            <br>
+            Description: <input type="text" name="description">
+            <br>
+            Experience: <input type="text" name="experience">
+            <br>
+            Company: <input type="text" name="company">
+            <br>
+            Country: <input type="text" name="country">
+            <br>
+            City: <input type="text" name="city">
+            <br>
+            Address: <input type="text" name="address">
+            <br>
+            <button class="btn">Save</button>
+	</form>
+{% endblock %}
