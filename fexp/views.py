@@ -19,8 +19,6 @@ def index():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
 
-    send_email_msg('FEXP', recipients=['fexpcompany@gmail.com'], html="<h1>Text</h1>")
-
     if request.method == 'POST':
         # Получаем из формы значения полей и сохраняем их в обьекте User, а затем добавляем этот обьект в БД.
         username = request.form.get('username')
@@ -149,7 +147,7 @@ def create_job_vacansy():
 
         db.session.add(new_job_vacansy)
         db.session.commit()
-        return redirect(url_for('profile'), username=current_user.username)
+        return redirect(url_for('profile', username=current_user.username))
     
     return render_template('create_job_vacansy.html', form=form)
 
@@ -169,6 +167,6 @@ def create_summary():
 
         db.session.add(new_summary)
         db.session.commit()
-        return redirect(url_for('profile'), username=current_user.username)
+        return redirect(url_for('profile', username=current_user.username))
 
     return render_template('create_summary.html', form=form)
