@@ -35,6 +35,7 @@ def register():
                     db.session.commit()
 
                     flash('Регистрация прошла успешно')
+                    return redirect(url_for('login'))
                 except:
                     db.session.rollback()
                     flash('error')
