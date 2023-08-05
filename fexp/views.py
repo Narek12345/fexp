@@ -13,6 +13,20 @@ from .forms import EmployerForm, StudentForm, JobVacansyForm, SummaryForm
 @app.route('/index')
 @app.route('/')
 def index():
+    # Проверяем, зарегестрирован пользователь или нет.
+    if current_user.is_authenticated:
+
+        # Проверяем, кем является пользователь: student/employer.
+        if current_user.role == 'student':
+            # Составляем запрос для вывода всех последних 10 вакансий.
+            latest_10_vacancies = JobVacansy.query.all()[:10]
+            return render_template('index.html', latest_10_vacancies=latest_10_vacancies)
+
+        elif current_user.role == 'employer':
+            # Составляем запрос для вывода всех полследних 10 резюме.
+            latest_10_summary = Summary.query.all()[:10]
+            return render_template('index.html', latest_10_summary=latest_10_summary)
+
     return render_template('index.html')
 
 

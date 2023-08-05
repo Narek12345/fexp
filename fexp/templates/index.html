@@ -1,11 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Главная{% endblock %}
+{% block title %} - Главная{% endblock %}
 
 {% block links %}
 
-{% endblock %} 
+{% endblock %}
 
 {% block content %}
+	<!-- Выводим 10 последних вакансий студенту. -->
+	{% if latest_10_vacancies %}
+		<h1>Список последних 10 вакансий:</h1>
+		{% for v in latest_10_vacancies %}
+			<a href="">{{ v.title }}</a>
+		{% endfor %}
+	{% endif %}
 
+	<!-- Выводим 10 последних резюме работодателю. -->
+	{% if latest_10_summary %}
+		<h1>Список последних 10 резюме:</h1>
+		{% for s in latest_10_summary %}
+			<a href="">{{ s.title }}</a>
+		{% endfor %}
+	{% endif %}
 {% endblock %}
