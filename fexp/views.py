@@ -72,7 +72,11 @@ def profile(username):
         abort(403)
 
     if user.role == 'student':
+        # Получаем информацию о текущем пользователе.
         user_info = Student.query.filter_by(user=user.id).first()
+        # Получаем все резюме текущего пользователя.
+        summary = Summary.query.filter_by(student=user_info.id).all()
+        # Создаем пустую форму для создания своего профиля.
         form = StudentForm()
 
         # Проверяем, что пользователь зарегестрировал свой профиль. В противном случае отправляем форму для ввода.
@@ -80,7 +84,7 @@ def profile(username):
             profile_info = Student.query.filter_by(user=user.id).first()
 
             # Отрисовываем страницу для зарегестрированного пользователя
-            return render_template('profile.html', profile_info=profile_info, user=user, registered_profile=True)
+            return render_template('profile.html', profile_info=profile_info, user=user, summary=summary, registered_profile=True)
         else:
             form = StudentForm(request.form)
 
@@ -96,7 +100,11 @@ def profile(username):
                 return redirect(url_for('profile', username=username))
 
     elif user.role == 'employer':
+        # Получаем информацию о текущем пользователе.
         user_info = Employer.query.filter_by(user=user.id).first()
+        # Получаем все вакансий текущего пользователя.
+        vacansy = JobVacansy.query.filter_by(employer=user_info.id).all()
+        # Создаем пустую форму для создания своего профиля.
         form = EmployerForm()
 
         # Проверяем, что пользователь зарегестрировал свой профиль. В противном случае отправляем форму для ввода.
@@ -104,7 +112,7 @@ def profile(username):
             profile_info = Employer.query.filter_by(user=user.id).first()
             
             # Отрисовываем страницу для зарегестрированного пользователя
-            return render_template('profile.html', profile_info=profile_info, user=user, registered_profile=True)
+            return render_template('profile.html', profile_info=profile_info, user=user, vacansy=vacansy, registered_profile=True)
         else:
             form = EmployerForm(request.form)
 

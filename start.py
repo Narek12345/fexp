@@ -1,4 +1,4 @@
-from fexp import app, db
+from fexp import app
 
 
 if __name__ == '__main__':

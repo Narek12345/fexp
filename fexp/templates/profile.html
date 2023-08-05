@@ -14,7 +14,6 @@
             <a href="/logout" class="btn">Выйти из аккаунта</a>
         </div>
 
-        
         <h2>Your profile:</h2>
         <div class="profile_info">
             <h3>First name: {{ profile_info.first_name }}</h3>
@@ -22,6 +21,22 @@
             <h3>Phone number: {{ profile_info.phone_number }}</h3>
             <h3>Email: {{ profile_info.email }}</h3>
         </div>
+
+        
+
+        {% if summary %}
+            <!-- Выводим через цикл for все резюме резюме. -->
+            <h2>Ваши резюме:</h2>
+            {% for s in summary %}
+                <h3><a href="">{{ s.title }}</a></h3>
+            {% endfor %}
+        {% else %}
+            <h3>You don't have a summary yet!</h3>
+        {% endif %}
+
+        <br>
+        <br>
+        <br>
 
         <!-- Проверяем, какую ссылку вывести пользователю: создать резюме/вакансию. -->
         {% if user.role=='student' %}
@@ -31,7 +46,6 @@
         {% if user.role=='employer' %}
             <a href="/create_job_vacansy" class="btn">Create a job</a>
         {% endif %}
-
 
     {% else %}
         <div class="container">
