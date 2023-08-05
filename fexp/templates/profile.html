@@ -22,29 +22,37 @@
             <h3>Email: {{ profile_info.email }}</h3>
         </div>
 
-        
-
-        {% if summary %}
-            <!-- Выводим через цикл for все резюме резюме. -->
-            <h2>Ваши резюме:</h2>
-            {% for s in summary %}
-                <h3><a href="">{{ s.title }}</a></h3>
-            {% endfor %}
-        {% else %}
-            <h3>You don't have a summary yet!</h3>
-        {% endif %}
-
-        <br>
-        <br>
         <br>
 
         <!-- Проверяем, какую ссылку вывести пользователю: создать резюме/вакансию. -->
         {% if user.role=='student' %}
             <a href="/create_summary" class="btn">Create a summary</a>
+            <br>
+            <br>
+            {% if summary %}
+                <!-- Выводим через цикл for все резюме студента. -->
+                <h2>Ваши резюме:</h2>
+                {% for s in summary %}
+                    <h3><a href="">{{ s.title }}</a></h3>
+                {% endfor %}
+            {% else %}
+                <h3>You don't have a summary yet!</h3>
+            {% endif %}
         {% endif %}
 
         {% if user.role=='employer' %}
             <a href="/create_job_vacansy" class="btn">Create a job</a>
+            <br>
+            <br>
+            {% if vacansy %}
+                <!-- Выводим через цикл for все вакансий работодателя. -->
+                <h2>Ваши вакансий:</h2>
+                {% for v in vacansy %}
+                    <h3><a href="">{{ v.title }}</a></h3>
+                {% endfor %}
+            {% else %}
+                <h3>You don't have a vacansy yet!</h3>
+            {% endif %}
         {% endif %}
 
     {% else %}
